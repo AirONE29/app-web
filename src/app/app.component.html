@@ -1,14 +1,19 @@
-<div class="btn-group" dropdown>
-  <button id="button-animated" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
-          aria-controls="dropdown-animated">
-    Button dropdown <span class="caret"></span>
-  </button>
-  <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu"
-      role="menu" aria-labelledby="button-animated">
-    <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
-    <li role="menuitem"><a class="dropdown-item" href="#">Another action</a>
-    </li>
-    <li role="menuitem"><a class="dropdown-item" href="#">Something else
-      here</a></li>
-  </ul>
+<div class="container">
+  <div class="btn-group" dropdown>
+    <button id="button-animated" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+            aria-controls="dropdown-animated">{{ "login.switch-language" | translate }}<span class="caret"></span>
+    </button>
+    <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu"
+        role="menu" aria-labelledby="button-animated">
+      <li role="menuitem"><a class="dropdown-item" (click)="switchLanguage('en')"><span class="fi fi-gb"></span> EN</a></li>
+      <li role="menuitem"><a class="dropdown-item" (click)="switchLanguage('fr')"><span class="fi fi-fr"></span> FR</a></li>
+      <li role="menuitem"><a class="dropdown-item" (click)="switchLanguage('tr')"><span class="fi fi-tr"></span> TR</a></li>
+    </ul>
+  </div>
+  <hr>
+  <h1>{{ "login.title" | translate }}</h1>
+  <hr>
+  <button class="btn btn-outline-secondary me-3">{{ "login.sign-up" | translate }}</button>
+  <button class="btn btn-primary">{{ "login.log-in" | translate }}</button>
 </div>
+

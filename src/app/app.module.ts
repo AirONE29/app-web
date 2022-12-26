@@ -6,6 +6,13 @@ import {BsDropdownModule} from "ngx-bootstrap/dropdown";
 import {TooltipModule} from "ngx-bootstrap/tooltip";
 import {ModalModule} from "ngx-bootstrap/modal";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate/core";
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, "/assets/i18n/", ".json");
+}
 
 @NgModule({
   declarations: [
@@ -16,9 +23,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      defaultLanguage: "en"
+    })
   ],
-  providers: [],
+  providers: [
+    {
+      provide: TranslateLoader,
+      useFactory: HttpLoaderFactory,
+      deps: [HttpClient]
+    },
+    TranslateService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
