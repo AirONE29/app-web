@@ -1,3 +1,6 @@
+<span *ngIf="loggedUser">LOGGED as {{username}}.</span>
+<span *ngIf="!loggedUser">NOT LOGGED</span>
+
 <div class="container">
   <div class="btn-group" dropdown>
     <button id="button-animated" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
@@ -13,7 +16,10 @@
   <hr>
   <h1>{{ "login.title" | translate }}</h1>
   <hr>
-  <button class="btn btn-outline-secondary me-3">{{ "login.sign-up" | translate }}</button>
-  <button class="btn btn-primary">{{ "login.log-in" | translate }}</button>
+  <div class="me-3">
+    <button class="btn btn-outline-secondary me-3" *ngIf="!loggedUser" (click)="register()">{{ "login.sign-up" | translate }}</button>
+    <button class="btn btn-primary" *ngIf="!loggedUser" (click)="login()">{{ "login.log-in" | translate }}</button>
+    <button class="btn btn-danger" *ngIf="loggedUser" (click)="logout()">{{ "login.log-out" | translate }}</button>
+  </div>
 </div>
 

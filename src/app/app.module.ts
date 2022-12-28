@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -9,9 +9,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate/core";
+import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
+import {environment} from "../environments/environment";
 
-export function HttpLoaderFactory(http: HttpClient) {
+function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, "/assets/i18n/", ".json");
+}
+
+function initializeKeycloak(keycloack: KeycloakService) {
+  return () => keycloack.init({
+    config: {
+      url: environment.keycloakUrl,
+      realm: environment.keycloakRealm,
+      clientId: environment.keycloakClientId
+    },
+    initOptions: {
+      onLoad: 'check-sso',
+      silentCheckSsoRedirectUri: window.location.origin + '/assets/verify-sso.html',
+      // checkLoginIframe: false
+    }
+  });
 }
 
 @NgModule({
@@ -27,13 +44,20 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpClientModule,
     TranslateModule.forRoot({
       defaultLanguage: "en"
-    })
+    }),
+    KeycloakAngularModule
   ],
   providers: [
     {
       provide: TranslateLoader,
       useFactory: HttpLoaderFactory,
       deps: [HttpClient]
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
     },
     TranslateService
   ],
